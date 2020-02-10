@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ message }}
-    {{ status }}
+
+    {% if status == 403 %}
+        Github api rate limit exceeded, If you want to make new requests please define a api token in config/parameters.yml
+    {% endif %}
+
+    {% if status == 404 %}
+        user not found
+    {% endif %}
+
 {% endblock %}

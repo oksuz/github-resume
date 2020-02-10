@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Services\GithubCvCreator;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ExceptionController extends AbstractController
 {
