@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Rokkitt:400,700|Lato:400,300' rel='stylesheet' type='text/css'>
+{% endblock %}
+
 {% block body %}
-        <input type="text" id="username">
-        <button type="button" id="submit">Visit Google</button>
+    <div class="inputs">
+        <input type="text" value="{{ cv.developer.githubUserName|default('')|escape }}" id="username">
+        <button type="button" id="submit">Create Cv!</button>
+    </div>
+    {% if cv is not null %}
+        {% include 'cv.html.twig' %}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

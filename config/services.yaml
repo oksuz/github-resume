@@ -33,25 +33,16 @@ services:
 
     App\Services\ICvCreator: '@services.cvCreator'
 
+    App\Services\GithubClient:
+        arguments:
+            - { base_uri: '%github.url%', headers: { Authorization: '%github.token%' } }
+
     services.cvCreator:
         class: App\Services\GithubCvCreator
         shared: false
-        calls:
-            - method: setConfig
-              arguments:
-                  - '%github%'
 
     App\Services\DeveloperCvBuilder:
         shared: false #stateful
-
-#    App\Controller\ExceptionController:
-#        public: true
-#
-#    App\EventListener\ExceptionListener:
-#        autowire: false
-#        arguments: ['App\Controller\ExceptionController::showException', '@logger']
-#        tags:
-#            - { name: kernel.event_listener, event: kernel.exception }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

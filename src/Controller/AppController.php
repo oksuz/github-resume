@@ -36,12 +36,11 @@ class AppController extends AbstractController
 
     /**
      * @param string $username
-     * @param Request $request
      * @return Response
      *
      * @Route("/{username}", methods={"GET"}, defaults={"username": ""})
      */
-    public function index(string $username, Request $request): Response
+    public function index(string $username): Response
     {
         if (!empty($username)) {
             $cv = $this->cvCreator->createFromName($username)->getCv();

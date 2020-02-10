@@ -3,40 +3,38 @@
 namespace App\Services;
 
 use App\Model\DeveloperCv;
-use GuzzleHttp\Client;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 class GithubCvCreator implements ICvCreator
 {
-
-    const API_URL = 'https://api.github.com';
-
     /**
-     * @var Client
+     * @var GithubClient
      */
     protected $guzzle;
 
     /**
-     * @var DeveloperCvBuilder $cvBuilder
+     * @var DeveloperCvBuilder
      */
     protected $cvBuilder;
 
-    public function __construct(Client $guzzle, DeveloperCvBuilder $builder)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(GithubClient $guzzle, DeveloperCvBuilder $builder, LoggerInterface $logger)
     {
         $this->guzzle = $guzzle;
         $this->cvBuilder = $builder;
-    }
-
-    public function setConfig(array $config) {
-        /**
-         * @TODO implement this if github token is required
-         */
+        $this->logger = $logger;
     }
 
     public function createFromName(string $username): ICvCreator
     {
-        $this->cvBuilder->setUser($this->getUser($username));
-        $this->cvBuilder->setRepositories($this->getRepositories($username));
+        $user = $this->getUser($username);
+        $this->cvBuilder->setUser($user);
+        $this->cvBuilder->setRepositories($this->getRepositories($user['repos_url']));
+        return $this;
     }
 
     public function getCv(): ?DeveloperCv
@@ -46,26 +44,30 @@ class GithubCvCreator implements ICvCreator
 
     private function getUser(string $username): array
     {
-        $response = $this->guzzle->get(sprintf("%s/users/%s", self::API_URL, $username));
+        $response = $this->guzzle->get(sprintf("/users/%s",  $username));
         return json_decode($response->getBody(), true);
     }
 
-    private function getRepositories(string $username, $page = 1, $perPage = 10, array $collector = [])
+    private function getRepositories(string $repoUrl, $page = 1, $perPage = 100, array $collector = [])
     {
-        $response = $this->guzzle->get(sprintf("%s/users/%s/repos", self::API_URL, $username), [
+        $options = [
             'query' => [
                 'page' => $page,
                 'per_page' => $perPage
             ]
-        ]);
+        ];
 
-        $repos = array_merge($collector, json_decode($response->getBody(), true));
+        $this->logger->debug('requesting to ' . $repoUrl . ' with params', $options);
 
-        if (!empty($response->getHeader('Link'))) {
-            return $this->getRepositories($username, ++$page, $perPage, $repos);
+        $response = $this->guzzle->get($repoUrl, $options);
+
+        $repos = json_decode($response->getBody(), true);
+        $collector = array_merge($collector, $repos);
+
+        if (!empty($response->getHeader('Link')) && !empty($repos)) {
+            return $this->getRepositories($repoUrl, ++$page, $perPage, $repos);
         }
 
-        return $repos;
+        return $collector;
     }
-
 }

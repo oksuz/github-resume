@@ -1,0 +1,72 @@
+<div id="cv" class="instaFade">
+    <div class="mainDetails">
+        <div id="headshot" class="quickFade">
+            <img src="{{ cv.developer.avatarUrl }}" alt="{{ cv.developer.fullName }}"/>
+        </div>
+
+        <div id="name">
+            <h1 class="quickFade delayTwo">{{ cv.developer.fullName }}</h1>
+            <h2 class="quickFade delayThree"><a target="_blank"
+                                                href="http://github.com/{{ cv.developer.githubUserName }}">@{{ cv.developer.githubUserName }}</a>
+            </h2>
+        </div>
+
+        <div id="contactDetails" class="quickFade delayFour">
+            <ul>
+                {% if cv.developer.location is not empty %}
+                    <li>Location: {{ cv.developer.location }}</li>
+                {% endif %}
+
+                {% if cv.developer.blog is not empty %}
+                    <li>Blog: <a target="_blank" href="{{ cv.developer.blog }}">{{ cv.developer.blog }}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div id="mainArea" class="quickFade delayFive">
+
+
+        <section>
+            <div class="sectionTitle">
+                <h1>Languages</h1>
+            </div>
+
+            <div class="sectionContent">
+                <ul class="keySkills">
+                    {% for lang, info in cv.getLanguages() %}
+                        <li>{{ lang }}
+                            <span class="repo-meta"> <span
+                                        class="percentage">{{ info.percentage|number_format(2) }} % |</span>  <span
+                                        class="count">{{ info.count }} repo</span> </span></li>
+                    {% else %}
+                        There are no language found
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="clear"></div>
+        </section>
+
+        <section>
+            <div class="sectionTitle">
+                <h1>Repositories</h1>
+            </div>
+
+            <div class="sectionContent">
+                {% for repo in cv.getRepositories() %}
+                    <article>
+                        <h2><a target="_blank" href="{{ repo.url }}">{{ repo.name }}</a></h2>
+                        <p class="subDetails">{{ repo.language }} - {{ repo.stars }} stars</p>
+                        <p>{{ repo.getDescription() }}</p>
+                    </article>
+                {% else %}
+                    There are no repository found
+                {% endfor %}
+
+            </div>
+            <div class="clear"></div>
+        </section>
+
+    </div>
+</div>
