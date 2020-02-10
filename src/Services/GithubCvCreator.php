@@ -65,7 +65,7 @@ class GithubCvCreator implements ICvCreator
         $collector = array_merge($collector, $repos);
 
         if (!empty($response->getHeader('Link')) && !empty($repos)) {
-            return $this->getRepositories($repoUrl, ++$page, $perPage, $repos);
+            return $this->getRepositories($repoUrl, ++$page, $perPage, $collector);
         }
 
         return $collector;
