@@ -5,6 +5,12 @@ namespace App\Services;
 use App\Model\DeveloperCv;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class GithubCvCreator
+ * @package App\Services
+ *
+ * takes info from github api, that is actual bridge of the controller and models
+ */
 class GithubCvCreator implements ICvCreator
 {
     /**
@@ -42,13 +48,28 @@ class GithubCvCreator implements ICvCreator
         return $this->cvBuilder->build();
     }
 
+    /**
+     * @param string $username
+     * @return array
+     *
+     * get user info from github
+     */
     private function getUser(string $username): array
     {
         $response = $this->guzzle->get(sprintf("/users/%s",  $username));
         return json_decode($response->getBody(), true);
     }
 
-    private function getRepositories(string $repoUrl, $page = 1, $perPage = 100, array $collector = [])
+    /**
+     * @param string $repoUrl
+     * @param int $page
+     * @param int $perPage
+     * @param array $collector, for recursive calls
+     * @return array
+     *
+     * takes user repositories, if user have more than $perPage repositories, it starts recursive call until fetching all repositories;.
+     */
+    private function getRepositories(string $repoUrl, $page = 1, $perPage = 100, array $collector = []): array
     {
         $options = [
             'query' => [

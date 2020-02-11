@@ -6,6 +6,12 @@ use GuzzleHttp\Exception\ClientException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class ExceptionController
+ * @package App\Controller
+ *
+ * Handles GithubClient exception for notice to user about rate limit or not existing github user
+ */
 class ExceptionController extends AbstractController
 {
     public function showException(Request $request)

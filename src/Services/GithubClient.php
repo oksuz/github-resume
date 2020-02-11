@@ -2,10 +2,14 @@
 
 
 namespace App\Services;
-
-
 use GuzzleHttp\Client;
 
+/**
+ * Class GithubClient
+ * @package App\Services
+ *
+ * pre configured github http api client
+ */
 class GithubClient extends Client
 {
 

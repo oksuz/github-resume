@@ -1,13 +1,17 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Model\Developer;
 use App\Model\DeveloperCv;
 use App\Model\GithubRepositories;
 
+/**
+ * Class DeveloperCvBuilder
+ * @package App\Services
+ *
+ * Cv builder keeps developer info and creates cv when you want to create
+ */
 class DeveloperCvBuilder
 {
 
@@ -33,7 +37,7 @@ class DeveloperCvBuilder
         return $cv;
     }
 
-    public function setRepositories(array $repositories)
+    public function setRepositories(array $repositories): void
     {
         $this->repositories = array_merge($this->repositories, $repositories);
     }

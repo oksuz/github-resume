@@ -3,7 +3,12 @@
 
 namespace App\Model;
 
-
+/**
+ * Class GithubRepo
+ * @package App\Model
+ *
+ * keeps github repo info
+ */
 class GithubRepo
 {
     private $stars = 0;

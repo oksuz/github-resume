@@ -3,7 +3,12 @@
 
 namespace App\Model;
 
-
+/**
+ * Class Developer
+ * @package App\Model
+ *
+ * Developer model keeps developer information
+ */
 class Developer
 {
     private $fullName;

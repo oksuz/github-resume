@@ -3,7 +3,12 @@
 
 namespace App\Model;
 
-
+/**
+ * Class DeveloperCv
+ * @package App\Model
+ *
+ * Keeps Developer and him/her's repositories with calculation helper methods
+ */
 class DeveloperCv
 {
     /**
@@ -16,12 +21,12 @@ class DeveloperCv
      */
     private $repositories;
 
-    public function setDeveloper(Developer $developer)
+    public function setDeveloper(Developer $developer): void
     {
         $this->developer = $developer;
     }
 
-    public function setRepositories(GithubRepositories $repositories)
+    public function setRepositories(GithubRepositories $repositories): void
     {
         $this->repositories = $repositories;
     }
@@ -42,6 +47,11 @@ class DeveloperCv
         return $this->repositories;
     }
 
+    /**
+     * @return array, array<[lang => [count, percentage]>
+     * calculates language using percent by repository count
+     * languages sorted descending by language using count
+     */
     public function getLanguages(): array
     {
         $totalCount = $this->repositories->hasLanguageCount();
