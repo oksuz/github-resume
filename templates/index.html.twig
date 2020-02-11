@@ -7,7 +7,7 @@
 
 {% block body %}
     <div class="inputs">
-        <input type="text" value="{{ cv.developer.githubUserName|default('')|escape }}" id="username">
+        <input placeholder="Enter your github username..." type="text" value="{{ cv.developer.githubUserName|default('')|escape }}" id="username">
         <button type="button" id="submit">Create Cv!</button>
     </div>
     {% if cv is not null %}
